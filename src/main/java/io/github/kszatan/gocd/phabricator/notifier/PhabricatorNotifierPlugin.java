@@ -29,6 +29,7 @@ import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.DefaultRequestHandlerFactory;
 import io.github.kszatan.gocd.phabricator.notifier.handlers.RequestHandler;
 import io.github.kszatan.gocd.phabricator.notifier.handlers.RequestHandlerFactory;
 
@@ -41,7 +42,7 @@ public class PhabricatorNotifierPlugin extends AbstractGoPlugin {
     private static final List<String> supportedExtensionVersions = Collections.singletonList("1.0");
     private final RequestHandlerFactory requestHandlerFactory;
     public PhabricatorNotifierPlugin() {
-        requestHandlerFactory = null;
+        requestHandlerFactory = new DefaultRequestHandlerFactory();
     }
 
     public PhabricatorNotifierPlugin(RequestHandlerFactory requestHandlerFactory) {
