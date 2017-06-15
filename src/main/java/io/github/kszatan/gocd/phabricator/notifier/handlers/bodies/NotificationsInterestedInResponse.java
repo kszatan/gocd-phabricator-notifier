@@ -20,21 +20,32 @@
  * SOFTWARE.
  */
 
-package io.github.kszatan.gocd.phabricator.notifier.handlers;
+package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
 
-import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
-import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
-import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.NotificationsInterestedInResponse;
-
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
-public class NotificationsInterestedInRequestHandler implements RequestHandler {
+public class NotificationsInterestedInResponse {
+    public Collection<String> notifications;
+
+    public NotificationsInterestedInResponse(Collection<String> notifications) {
+        this.notifications = notifications;
+    }
+
+    public String toJson() {
+        return GsonService.toJson(this);
+    }
+
     @Override
-    public GoPluginApiResponse handle(GoPluginApiRequest request) {
-        Collection<String> notifications = Arrays.asList("stage-status");
-        NotificationsInterestedInResponse response = new NotificationsInterestedInResponse(notifications);
-        return DefaultGoPluginApiResponse.success(response.toJson());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotificationsInterestedInResponse that = (NotificationsInterestedInResponse) o;
+        return Objects.equals(notifications, that.notifications);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(notifications);
     }
 }

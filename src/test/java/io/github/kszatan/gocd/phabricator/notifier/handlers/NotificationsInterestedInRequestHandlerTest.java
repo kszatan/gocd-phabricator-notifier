@@ -25,16 +25,34 @@ package io.github.kszatan.gocd.phabricator.notifier.handlers;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GsonService;
 import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.NotificationsInterestedInResponse;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
-public class NotificationsInterestedInRequestHandler implements RequestHandler {
-    @Override
-    public GoPluginApiResponse handle(GoPluginApiRequest request) {
-        Collection<String> notifications = Arrays.asList("stage-status");
-        NotificationsInterestedInResponse response = new NotificationsInterestedInResponse(notifications);
-        return DefaultGoPluginApiResponse.success(response.toJson());
+public class NotificationsInterestedInRequestHandlerTest {
+    private NotificationsInterestedInRequestHandler handler;
+    @Before
+    public void setUp() throws Exception {
+        handler = new NotificationsInterestedInRequestHandler();
     }
+    
+    @Test
+    public void handleShouldReturnSuccessResponseCode() throws Exception {
+        GoPluginApiResponse response = handler.handle(mock(GoPluginApiRequest.class));
+        assertThat(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, equalTo(response.responseCode()));
+    }
+
+    @Test
+    public void handleShouldReturnValidScmConfiguration() throws Exception {
+        GoPluginApiResponse response = handler.handle(mock(GoPluginApiRequest.class));
+        NotificationsInterestedInResponse definition = GsonService.fromJson(response.responseBody(), NotificationsInterestedInResponse.class);
+        assertThat(definition.notifications.size(), greaterThan(0));
+    }
+
 }
