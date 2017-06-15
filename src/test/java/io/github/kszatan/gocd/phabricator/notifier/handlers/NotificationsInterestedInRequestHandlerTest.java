@@ -54,5 +54,4 @@ public class NotificationsInterestedInRequestHandlerTest {
         NotificationsInterestedInResponse definition = GsonService.fromJson(response.responseBody(), NotificationsInterestedInResponse.class);
         assertThat(definition.notifications.size(), greaterThan(0));
     }
-
 }
