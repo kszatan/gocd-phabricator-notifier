@@ -40,6 +40,9 @@ public class DefaultRequestHandlerFactory implements  RequestHandlerFactory {
             case GO_PLUGIN_SETTINGS_GET_CONFIGURATION:
                 handler = new GoPluginSettingsGetConfigurationRequestHandler();
                 break;
+            case GO_PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
+                handler = new GoPluginSettingsValidateConfigurationRequestHandler();
+                break;
             default:
                 throw new UnhandledRequestTypeException(requestType);
         }

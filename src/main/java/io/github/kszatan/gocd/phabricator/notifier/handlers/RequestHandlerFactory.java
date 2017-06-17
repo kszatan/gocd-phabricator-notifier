@@ -29,6 +29,7 @@ public interface RequestHandlerFactory {
     String STAGE_STATUS = "stage-status";
     String GO_PLUGIN_SETTINGS_GET_VIEW = "go.plugin-settings.get-view";
     String GO_PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
+    String GO_PLUGIN_SETTINGS_VALIDATE_CONFIGURATION = "go.plugin-settings.validate-configuration";
 
     RequestHandler create(String requestType) throws UnhandledRequestTypeException;
 }

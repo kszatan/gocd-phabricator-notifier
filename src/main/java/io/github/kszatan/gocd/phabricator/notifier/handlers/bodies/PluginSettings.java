@@ -20,50 +20,33 @@
  * SOFTWARE.
  */
 
-apply plugin: 'java'
+package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+import java.util.Objects;
 
-project.ext.pluginDesc = [
-    id         : 'io.github.kszatan.gocd.phabricator.notifier',
-    version    : project.version,
-    goCdVersion: '17.4.0',
-    name       : 'Phabricator Notifier',
-    description: 'GoCD notification plugin for notyfing Phabricator differentials.',
-    vendorName : 'Krzysztof Szatan',
-    vendorUrl  : 'https://github.com/kszatan/gocd-phabricator-notifier'
-]
+public class PluginSettings {
+    public SettingsEntry url = new SettingsEntry();
+    public SettingsEntry token = new SettingsEntry();
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-dependencies {
-    compile 'cd.go.plugin:go-plugin-api:17.4.+'
-    compile 'com.google.code.gson:gson:2.8.+'
-    compile 'commons-io:commons-io:2.5'
-    compile 'commons-validator:commons-validator:1.6'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.+'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-}
-
-jar {
-    from(configurations.compile) {
-        into "lib/"
+    public String getUrl() {
+        return url.value;
     }
-}
 
-processResources {
-    from("src/main/resource-templates") {
-        filesMatching('plugin.xml') {
-            expand project.pluginDesc
-        }
+    public String getToken() {
+        return token.value;
     }
-}
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PluginSettings that = (PluginSettings) o;
+        return Objects.equals(url, that.url) &&
+                Objects.equals(token, that.token);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(url, token);
+    }
 }

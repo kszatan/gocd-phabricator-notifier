@@ -20,50 +20,24 @@
  * SOFTWARE.
  */
 
-apply plugin: 'java'
+package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+import java.util.Arrays;
+import java.util.Collection;
 
-project.ext.pluginDesc = [
-    id         : 'io.github.kszatan.gocd.phabricator.notifier',
-    version    : project.version,
-    goCdVersion: '17.4.0',
-    name       : 'Phabricator Notifier',
-    description: 'GoCD notification plugin for notyfing Phabricator differentials.',
-    vendorName : 'Krzysztof Szatan',
-    vendorUrl  : 'https://github.com/kszatan/gocd-phabricator-notifier'
-]
+public class GoPluginSettingsValidateConfigurationRequest {
+    private final PluginSettings settings;
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-dependencies {
-    compile 'cd.go.plugin:go-plugin-api:17.4.+'
-    compile 'com.google.code.gson:gson:2.8.+'
-    compile 'commons-io:commons-io:2.5'
-    compile 'commons-validator:commons-validator:1.6'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.+'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-}
-
-jar {
-    from(configurations.compile) {
-        into "lib/"
-    }
-}
-
-processResources {
-    from("src/main/resource-templates") {
-        filesMatching('plugin.xml') {
-            expand project.pluginDesc
+    public GoPluginSettingsValidateConfigurationRequest(String json) throws InvalidJson, IncompleteJson {
+        Collection<String> missing = GsonService.validate(json, Arrays.asList("plugin-settings"));
+        if (!missing.isEmpty()) {
+            throw new IncompleteJson("Missing fields: " + missing.toString());
         }
+        String settingsJson = GsonService.getField(json, "plugin-settings");
+        settings = GsonService.fromJson(settingsJson, PluginSettings.class);
     }
-}
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    public PluginSettings getConfiguration() {
+        return settings;
+    }
 }

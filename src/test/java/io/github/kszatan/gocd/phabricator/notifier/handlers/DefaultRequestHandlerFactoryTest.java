@@ -22,6 +22,8 @@
 
 package io.github.kszatan.gocd.phabricator.notifier.handlers;
 
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GoPluginSettingsGetViewResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GoPluginSettingsValidateConfigurationRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,6 +47,24 @@ public class DefaultRequestHandlerFactoryTest {
     public void shouldCreateRequestHandlerForStageStatusRequest() throws Exception {
         RequestHandler handler = requestHandlerFactory.create(RequestHandlerFactory.STAGE_STATUS);
         assertThat(handler instanceof StageStatusRequestHandler, is(true));
+    }
+
+    @Test
+    public void shouldCreateRequestHandlerForGetConfigurationRequest() throws Exception {
+        RequestHandler handler = requestHandlerFactory.create(RequestHandlerFactory.GO_PLUGIN_SETTINGS_GET_CONFIGURATION);
+        assertThat(handler instanceof GoPluginSettingsGetConfigurationRequestHandler, is(true));
+    }
+
+    @Test
+    public void shouldCreateRequestHandlerForGetViewRequest() throws Exception {
+        RequestHandler handler = requestHandlerFactory.create(RequestHandlerFactory.GO_PLUGIN_SETTINGS_GET_VIEW);
+        assertThat(handler instanceof GoPluginSettingsGetViewRequestHandler, is(true));
+    }
+
+    @Test
+    public void shouldCreateRequestHandlerForValidateConfigurationRequest() throws Exception {
+        RequestHandler handler = requestHandlerFactory.create(RequestHandlerFactory.GO_PLUGIN_SETTINGS_VALIDATE_CONFIGURATION);
+        assertThat(handler instanceof GoPluginSettingsValidateConfigurationRequestHandler, is(true));
     }
 
     @Test
