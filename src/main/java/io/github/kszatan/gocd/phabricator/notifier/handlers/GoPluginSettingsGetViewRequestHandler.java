@@ -22,13 +22,23 @@
 
 package io.github.kszatan.gocd.phabricator.notifier.handlers;
 
-import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
+import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
+import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
+import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GoPluginSettingsGetViewResponse;
+import org.apache.commons.io.IOUtils;
 
-public interface RequestHandlerFactory {
-    String NOTIFICATIONS_INTERESTED_IN = "notifications-interested-in";
-    String STAGE_STATUS = "stage-status";
-    String GO_PLUGIN_SETTINGS_GET_VIEW = "go.plugin-settings.get-view";
-    String GO_PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
-
-    RequestHandler create(String requestType) throws UnhandledRequestTypeException;
+public class GoPluginSettingsGetViewRequestHandler implements RequestHandler {
+    @Override
+    public GoPluginApiResponse handle(GoPluginApiRequest request) {
+        GoPluginApiResponse response;
+        try {
+            String template = IOUtils.toString(getClass().getResourceAsStream("/views/plugin-settings.template.html"), "UTF-8");
+            GoPluginSettingsGetViewResponse view = new GoPluginSettingsGetViewResponse(template);
+            response = DefaultGoPluginApiResponse.success(view.toJson());
+        } catch (java.io.IOException e) {
+            response = DefaultGoPluginApiResponse.error("Failed to find template: " + e.getMessage());
+        }
+        return response;
+    }
 }

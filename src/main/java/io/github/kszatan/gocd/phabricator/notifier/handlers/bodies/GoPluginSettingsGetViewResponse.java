@@ -20,15 +20,35 @@
  * SOFTWARE.
  */
 
-package io.github.kszatan.gocd.phabricator.notifier.handlers;
+package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
 
-import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
+import java.util.Objects;
 
-public interface RequestHandlerFactory {
-    String NOTIFICATIONS_INTERESTED_IN = "notifications-interested-in";
-    String STAGE_STATUS = "stage-status";
-    String GO_PLUGIN_SETTINGS_GET_VIEW = "go.plugin-settings.get-view";
-    String GO_PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
+public class GoPluginSettingsGetViewResponse {
+    private String template;
 
-    RequestHandler create(String requestType) throws UnhandledRequestTypeException;
+    public GoPluginSettingsGetViewResponse(String template) {
+        this.template = template;
+    }
+
+    public String toJson() {
+        return GsonService.toJson(this);
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GoPluginSettingsGetViewResponse that = (GoPluginSettingsGetViewResponse) o;
+        return Objects.equals(template, that.template);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(template);
+    }
 }
