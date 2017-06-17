@@ -22,8 +22,34 @@
 
 package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
 
-public class IncompleteJson extends Exception {
-    public IncompleteJson(String s) {
-        super(s);
+import com.google.gson.annotations.SerializedName;
+
+public class GoPluginSettingsGetConfigurationResponse {
+    public class Field {
+        @SerializedName("display-name")
+        public String displayName;
+        @SerializedName("display-order")
+        public String displayOrder;
+        @SerializedName("default-value")
+        public String defaultValue;
+        public Boolean secure;
+        public Boolean required;
+    }
+
+    public Field url;
+    public Field token;
+
+    public GoPluginSettingsGetConfigurationResponse() {
+        url = new Field();
+        url.displayName = "Phabricator Base URL";
+        url.displayOrder = "0";
+        url.required = true;
+        url.defaultValue = "https://phabricator.unicorn.com";
+
+        token = new Field();
+        token.displayName = "API Token";
+        token.displayOrder = "1";
+        token.secure = true;
+        token.required = true;
     }
 }

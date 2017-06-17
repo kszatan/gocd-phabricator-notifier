@@ -20,10 +20,18 @@
  * SOFTWARE.
  */
 
-package io.github.kszatan.gocd.phabricator.notifier.handlers.bodies;
+package io.github.kszatan.gocd.phabricator.notifier.handlers;
 
-public class IncompleteJson extends Exception {
-    public IncompleteJson(String s) {
-        super(s);
+import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
+import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
+import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GoPluginSettingsGetConfigurationResponse;
+import io.github.kszatan.gocd.phabricator.notifier.handlers.bodies.GsonService;
+
+public class GoPluginSettingsGetConfigurationRequestHandler implements RequestHandler {
+    @Override
+    public GoPluginApiResponse handle(GoPluginApiRequest request) {
+        return DefaultGoPluginApiResponse.success(
+                GsonService.toJson(new GoPluginSettingsGetConfigurationResponse()));
     }
 }

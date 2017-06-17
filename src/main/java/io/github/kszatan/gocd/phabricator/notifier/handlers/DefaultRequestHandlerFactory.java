@@ -34,6 +34,9 @@ public class DefaultRequestHandlerFactory implements  RequestHandlerFactory {
             case STAGE_STATUS:
                 handler = new StageStatusRequestHandler();
                 break;
+            case GO_PLUGIN_SETTINGS_GET_CONFIGURATION:
+                handler = new GoPluginSettingsGetConfigurationRequestHandler();
+                break;
             default:
                 throw new UnhandledRequestTypeException(requestType);
         }

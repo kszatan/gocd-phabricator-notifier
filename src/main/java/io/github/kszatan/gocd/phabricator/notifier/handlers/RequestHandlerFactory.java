@@ -27,6 +27,7 @@ import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 public interface RequestHandlerFactory {
     String NOTIFICATIONS_INTERESTED_IN = "notifications-interested-in";
     String STAGE_STATUS = "stage-status";
+    String GO_PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
 
     RequestHandler create(String requestType) throws UnhandledRequestTypeException;
 }
